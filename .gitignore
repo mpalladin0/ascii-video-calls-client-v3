@@ -1,0 +1,4 @@
+.eslintrc.js
+.parcel-cache/
+dist/
+node_modules/

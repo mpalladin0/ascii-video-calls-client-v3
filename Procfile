@@ -1,0 +1,1 @@
+echo 'web: npx serve' > Procfile
