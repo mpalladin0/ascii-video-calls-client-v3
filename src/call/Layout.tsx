@@ -46,10 +46,10 @@ export const Layout = () => {
     //     setCapturingRef(state)
     // }, [])
 
-    socket.on("user joined", (allSockets: any) => {
-        console.log(allSockets)
-        setUsers(allSockets)
-    })
+    // socket.on("user joined", (allSockets: any) => {
+    //     console.log(allSockets)
+    //     setUsers(allSockets)
+    // })
 
     // if (!socketReady) return <p>Loading...</p>
 
