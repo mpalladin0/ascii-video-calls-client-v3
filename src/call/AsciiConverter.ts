@@ -2,7 +2,7 @@ export class AsciiConverter {
 	/**
 	 * For dark mode, reverse the characters array
 	 */
-    characters = (" .,:;i1tfLCG08@").split("")
+    characters = (" .,:;i1tfLCG08@").split("").reverse()
     // characters = (" .,•:;i1!tgLCG08@#").split("").reverse()
 
     canvas: HTMLCanvasElement;
