@@ -1,39 +1,118 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { Card, Container, Row, useTheme, Text, Button, Col } from '@nextui-org/react'
+import React, { createContext, createRef, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Socket } from "socket.io-client"
 import { AsciiConverter } from './AsciiConverter'
 import { useCanvas } from './useCanvas' 
 
-export const PrimaryParticipant = ({ primarySocketId  }: { primarySocketId: string }) => {
-    return (
-        <>
-            <p>Capturing You (Primary):</p>
-                <pre style={{ fontSize: "5px" }} id={`primary-frame-`+primarySocketId} />
-            <hr />
-        </>
+
+export const Participant = ({ socketId, isPrimary }: { socketId: string, isPrimary: boolean }) => {
+    if (isPrimary) return (
+        <Card variant="bordered" css={{ width: "fit-content", backgroundColor: "$black" }}>
+            <Card.Header css={{ position: "absolute", zIndex: 1 }}>
+                <Col>
+                <Text h3 weight="bold" color="#ffffffAA">
+                    You
+                </Text>
+                </Col>
+            </Card.Header>
+            <Card.Body css={{ p: 0, m: 0 }}>
+                <pre 
+                    style={{ 
+                        fontSize: "3px",
+                        // width: "100%",
+                        // height: "100%",
+                        color: "green",
+                        margin: 0,
+                        padding: 0,
+                        backgroundColor: "transparent"
+                    }} 
+                    id={`primary-frame-${socketId}`} />
+            </Card.Body>
+        </Card>
+    )
+
+    if (!isPrimary) return (
+        <Card variant="bordered" css={{ width: "fit-content", backgroundColor: "$black" }}>
+            <Card.Header css={{ position: "absolute", zIndex: 1 }}>
+                <Col>
+                <Text h3 weight="bold" color="#ffffffAA">
+                    {socketId}
+                </Text>
+                </Col>
+            </Card.Header>
+            <Card.Body css={{ p: 0, m: 0 }}>
+                <pre 
+                    style={{ 
+                        fontSize: "3px",
+                        color: "green",
+                        margin: 0,
+                        padding: 0,
+                        backgroundColor: "transparent"
+                    }}
+                    id={`secondary-frame-${socketId}`}
+                />
+            </Card.Body>
+        </Card>
     )
 }
 
-export const SecondaryParticipant = ({ secondarySocketId }: { secondarySocketId: string }) => {
-    const { socket } = useContext(CallContext)
 
-    const asciiFrameRef = useRef('')
 
-    let elFrame
-    socket.on("frame update from server", (socketId: string, frame: string) => {
-        if (socket.id === socketId) return 
-        asciiFrameRef.current = frame
-        elFrame = document.getElementById(`secondary-frame-${socketId}`)
-        elFrame.innerText = asciiFrameRef.current
-    })
 
-    return (
-        <>
-            <p>Secondary Participant {secondarySocketId}: </p>
-                <pre style={{ fontSize: "5px" }} id={`secondary-frame-`+secondarySocketId} />
-            <hr />
-        </>
-    )
-}
+// export const PrimaryParticipant = ({ primarySocketId  }: { primarySocketId: string }) => {
+//     const { theme } = useTheme()
+
+//     const { converterRef  } = useContext(CallContext)
+
+//     return (
+//             <Card css={{
+//                     // height: converterRef.current.canvas.height*4,
+//                     backgroundColor: "$black",
+//                     width: "fit-content"
+//                 }}>
+//                 <Card.Body css={{ p: 0, m: 0,  }}>
+//                         <pre style={{ 
+//                             fontSize: "3px",
+//                             // width: "100%",
+//                             // height: "100%",
+//                             color: "green",
+//                             margin: 0,
+//                             padding: 0,
+//                             backgroundColor: "transparent"
+//                             }} id={`primary-frame-`+primarySocketId} />
+//                     </Card.Body>
+//                     <Card.Footer css={{ justifyItems: "flex-start", m: 0}}>
+//                     <Row wrap="wrap" justify="space-between" align="center">
+//                         <Text h3 css={{
+//                             color: "$backgroundContrast"
+//                         }} >You</Text>
+//                     </Row>
+//                 </Card.Footer>
+//             </Card>
+//     )
+// }
+
+// export const SecondaryParticipant = ({ secondarySocketId }: { secondarySocketId: string }) => {
+//     const { socket } = useContext(CallContext)
+
+//     const asciiFrameRef = useRef('')
+
+//     let elFrame
+//     socket.on("frame update from server", (socketId: string, frame: string) => {
+//         if (socket.id === socketId) return 
+//         asciiFrameRef.current = frame
+//         elFrame = document.getElementById(`secondary-frame-${socketId}`)
+//         elFrame.innerText = asciiFrameRef.current
+//     })
+
+//     return (
+//         <>
+//             <p>Secondary Participant {secondarySocketId}: </p>
+//                 <pre style={{ fontSize: "5px" }} id={`secondary-frame-`+secondarySocketId} />
+//             <hr />
+//         </>
+//     )
+// }
 
 
 // export const Participant = ({ socket, socketId }:  { socket: Socket, socketId: string, isCapturing: boolean }) => {
@@ -77,6 +156,7 @@ interface Call {
     join: () => void
     allSockets: any[]
     startCapture: (fps: number) => Promise<void>
+    converterRef: React.MutableRefObject<AsciiConverter>
 }
 
 export const CallContext = createContext({} as Call)
@@ -94,7 +174,7 @@ export const CallProvider = ({ children, socket }: { children: React.ReactNode, 
         primaryParticipantContainer.current = document.getElementById(`frame-${socket.id}`) as HTMLPreElement
     }, [])
     useEffect(() => { video.current = document.createElement("video") }, [])
-    useEffect(() => { canvas.current = useCanvas(160, 120) }, [])
+    useEffect(() => { canvas.current = useCanvas(240, 160) }, [])
 
     const requestDisplayMedia = async () => {
         console.log("[Client] Requesting display MediaStream...")
@@ -140,7 +220,7 @@ export const CallProvider = ({ children, socket }: { children: React.ReactNode, 
         else {
             const asciiFrame = converterRef.current.fromCanvas()
             primaryParticipantContainer.current.innerText = asciiFrame
-            socket.emit("frame update from client", socket.id, asciiFrame);
+            socket.emit("frame update from client", asciiFrame);
         }
 
     }
@@ -151,14 +231,7 @@ export const CallProvider = ({ children, socket }: { children: React.ReactNode, 
         console.log("Requesting permission for camera..")
         const mediaStream = await window.navigator.mediaDevices.getUserMedia({
                 audio: false,
-                video: { 
-                    width: {
-                        max: 160,
-                    }, 
-                    height: {
-                        max: 120,
-                    } 
-                } 
+                video: true
             })   
             .catch(err => { throw err })         
 
@@ -212,8 +285,20 @@ export const CallProvider = ({ children, socket }: { children: React.ReactNode, 
         setAllSockets(allSockets)
     })
 
+    let pre: HTMLPreElement;
+    socket.on("frame update from server", (socketId: string, frame: string) => {
+        pre = document.getElementById(`secondary-frame-${socketId}`) as HTMLPreElement
+        if (pre === null) return
+        pre.innerText = frame
+
+        // if (pre.current !== null) {
+        //     pre.current.innerText = frame
+        // }
+    })
+
+
     return (
-        <CallContext.Provider value={{ ready, setReady, join, socket, allSockets, startCapture }}>
+        <CallContext.Provider value={{ ready, setReady, join, socket, allSockets, startCapture, converterRef }}>
             {children}
         </CallContext.Provider>
     )

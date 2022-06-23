@@ -4,7 +4,7 @@
   "license": "MIT",
   "source": "src/index.html",
   "scripts": {
-    "start:dev": "parcel --port 3000",
+    "start:dev": "parcel serve --https --port 443",
     "start": "serve",
     "build": "parcel build"
   },
