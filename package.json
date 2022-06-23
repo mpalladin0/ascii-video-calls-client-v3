@@ -5,25 +5,46 @@
   "source": "src/index.html",
   "scripts": {
     "start:dev": "parcel serve --https --port 443",
-    "start": "serve",
-    "build": "parcel build"
+    "build": "parcel build",
+    "lint:eslint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "lint:eslint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix"
   },
+  "eslintIgnore": [
+    ".eslintrc.js"
+  ],
   "devDependencies": {
     "@types/lodash": "^4.14.182",
     "@types/react": "^18.0.14",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8.18.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-airbnb-typescript-prettier": "^5.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-webpack-plugin": "^3.2.0",
     "parcel": "^2.6.1",
-    "process": "^0.11.10"
+    "prettier": "^2.7.1",
+    "prettier-eslint": "^15.0.1",
+    "prettier-eslint-cli": "^6.0.1",
+    "process": "^0.11.10",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.9",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "serve": "latest",
     "socket.io-client": "^4.5.1"
   }
 }

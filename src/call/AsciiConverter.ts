@@ -2,7 +2,7 @@ export class AsciiConverter {
 	/**
 	 * For dark mode, reverse the characters array
 	 */
-    characters = (" .,:;i1tfLCG08@").split("").reverse()
+    characters = (' .,:;i1tfLCG08@').split('').reverse()
     // characters = (" .,•:;i1!tgLCG08@#").split("").reverse()
 
     canvas: HTMLCanvasElement;
@@ -13,7 +13,7 @@ export class AsciiConverter {
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.context = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext('2d');
         this.canvasWidth = this.canvas.width;
         this.canvasHeight = this.canvas.height;
     }
@@ -24,9 +24,9 @@ export class AsciiConverter {
          * Heavily modified by Andrei Gheorghe (http://github.com/idevelop)
          * Completely rewritten by Michael Palladino as an ES module (https://github.com/mpalladin0)
          */
-        if (this.context === null) throw new Error("Canvas context is not defined.");
+        if (this.context === null) throw new Error('Canvas context is not defined.');
 
-        let asciiCharacters = "";
+        let asciiCharacters = '';
 
         const imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
@@ -56,7 +56,7 @@ export class AsciiConverter {
 				asciiCharacters += character;
 			}
 
-			asciiCharacters += "\n";
+			asciiCharacters += '\n';
 		}
 
 		return asciiCharacters;

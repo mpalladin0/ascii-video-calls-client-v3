@@ -1,4 +1,4 @@
-import { Container, Card, Row, Text, Col, Spacer, Input, Button, Grid } from "@nextui-org/react";
+import { Container, Card, Row, Text, Col, Spacer, Input, Button, Grid, Link } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import { CallContext } from "../call/Participant";
@@ -17,8 +17,15 @@ const NicknameInput = ({ placeholder }) => {
 }
 
 const JoinButton = () => {
-    const { join } = useContext(CallContext)
-    return <Button onPress={() => join()}>Join</Button>;
+    const { socket, join } = useContext(CallContext)
+    const [socketReady, setSocketReady] = useState(socket.connected)
+
+    useEffect(() => {
+        socket.on("connect", () => setSocketReady(socket.connected))
+    }, [])
+
+    if (!socketReady) return <Button onPress={() => {}} disabled>Connecting..</Button>
+    return <Button onPress={() => join()}>Join</Button>
 }
 
 
@@ -27,7 +34,9 @@ export const NotReady = () => {
     const [socketId, setSocketId] = useState('')
 
     useEffect(() => {
-        socket.on("connect", () => setSocketId(socket.id))
+        socket.on("connect", () => { 
+            setSocketId(socket.id)
+        })
     }, [])
 
     const JoinCard = ({ text }) => {
@@ -60,6 +69,17 @@ export const NotReady = () => {
         </Grid>
         <Grid xs={5}>
             <JoinCard text="Join the ASCII Call" />
+        </Grid>
+        <Grid xs>
+        </Grid>
+      </Grid.Container>
+      <Grid.Container gap={2}>
+        <Grid xs>
+        </Grid>
+        <Grid xs={5} justify="center">
+            <div>
+            <Text b>Interested in how this works? <Link icon href="https://michaelpalladino.io/projects/ascii-video-feed">Read about it here</Link></Text>
+            </div> 
         </Grid>
         <Grid xs>
         </Grid>

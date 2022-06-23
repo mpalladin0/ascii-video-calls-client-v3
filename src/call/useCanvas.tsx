@@ -5,14 +5,14 @@ export function useCanvas(width: number, height: number) {
     canvas.height = height
 
     const context = canvas.getContext("2d")
-    context.canvas.width = width
-    context.canvas.height = height
+    context!.canvas.width = width
+    context!.canvas.height = height
 
     /**
      * Mirrors image
      */
-    context.translate(canvas.width, 0)
-    context.scale(-1, 1)
+    context!.translate(canvas.width, 0)
+    context!.scale(-1, 1)
 
     return canvas
 }
