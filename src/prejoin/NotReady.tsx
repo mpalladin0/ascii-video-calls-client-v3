@@ -18,7 +18,7 @@ const NicknameInput = ({ placeholder }) => {
 
 const JoinButton = () => {
     const { join } = useContext(CallContext)
-    return <Button onClick={() => join()}>Join</Button>;
+    return <Button onPress={() => join()}>Join</Button>;
 }
 
 
