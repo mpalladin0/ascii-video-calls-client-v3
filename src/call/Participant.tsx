@@ -1,4 +1,4 @@
-import { Card, Container, Row, useTheme, Text, Button, Col } from '@nextui-org/react'
+import { Card, Container, Row, useTheme, Text, Button, Col, theme } from '@nextui-org/react'
 import React, { createContext, createRef, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Socket } from "socket.io-client"
 import { AsciiConverter } from './AsciiConverter'
@@ -21,7 +21,7 @@ export const Participant = ({ socketId, isPrimary }: { socketId: string, isPrima
                         fontSize: "3px",
                         // width: "100%",
                         // height: "100%",
-                        color: "green",
+                        color: "white",
                         margin: 0,
                         padding: 0,
                         backgroundColor: "transparent"
@@ -44,7 +44,7 @@ export const Participant = ({ socketId, isPrimary }: { socketId: string, isPrima
                 <pre 
                     style={{ 
                         fontSize: "3px",
-                        color: "green",
+                        color: `${theme.colors.green600}`,
                         margin: 0,
                         padding: 0,
                         backgroundColor: "transparent"
