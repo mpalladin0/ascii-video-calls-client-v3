@@ -4,7 +4,8 @@
   "license": "MIT",
   "source": "src/index.html",
   "scripts": {
-    "start": "parcel --port 3000",
+    "start:dev": "parcel --port 3000",
+    "start": "serve",
     "build": "parcel build"
   },
   "devDependencies": {
