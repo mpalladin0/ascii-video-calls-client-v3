@@ -18,25 +18,19 @@ export const Layout = () => {
     useEffect(() => { startCapture(60) }, [])
 
     useEffect(() => {
-        // socket.on("connect", () => { 
-        //     setSocketId(socket.id)
-        //     setSocketReady(true)
-        // })
-
-        // if (socket.connected) {
-        //     setSocketId(socket.id)
-        //     setSocketReady(true)
-        // }
-
         socket.on("user joined", (allSockets: any[]) => {
             const filtered = _.remove(allSockets, (n) => {
                 // console.log(n);
-                return n == socket.id;
+                return n != socket.id;
             });
+
+            console.log(filtered)
 
             setUsers(filtered)
         })
 
+        return () => {  socket.emit("join call") }
+       
     }, [])
 
     const [users, setUsers] = useState([])
